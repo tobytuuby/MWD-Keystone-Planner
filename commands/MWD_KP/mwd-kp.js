@@ -207,9 +207,9 @@ function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons
     const dungeonService = new DungeonService(seasonDungeons);
     const dungeonScoreService = new DungeonScoreService();
     const dungeonRows = sortedDungeons.map((dungeon) => {
-        const completionLevelOne = Math.max(2, dungeon.mythic_level + 1);
-        const completionLevelTwo = Math.max(2, dungeon.mythic_level + 2);
-        const completionLevelThree = Math.max(2, dungeon.mythic_level + 3);
+        const completionLevelOne = Math.max(2, dungeon.target_level + 1);
+        const completionLevelTwo = Math.max(2, dungeon.target_level + 2);
+        const completionLevelThree = Math.max(2, dungeon.target_level + 3);
         const completionGainOne = getScoreGainForLevel(dungeon, completionLevelOne, dungeonService, dungeonScoreService);
         const completionGainTwo = getScoreGainForLevel(dungeon, completionLevelTwo, dungeonService, dungeonScoreService);
         const completionGainThree = getScoreGainForLevel(dungeon, completionLevelThree, dungeonService, dungeonScoreService);
@@ -227,7 +227,7 @@ function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons
 
     const dungeonTable = buildTableFromJson({
         title: '',
-        heading: ['Dungeon', 'Current', 'Target', 'Gain@Target', 'Run +1 key', 'Run +2 keys', 'Run +3 keys'],
+        heading: ['Dungeon', 'Current', 'Target', 'Gain@Target', 'Target+1 Gain', 'Target+2 Gain', 'Target+3 Gain'],
         rows: dungeonRows,
     });
 
