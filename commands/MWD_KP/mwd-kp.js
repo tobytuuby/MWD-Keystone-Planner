@@ -210,21 +210,24 @@ function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons
         const completionLevelOne = Math.max(2, dungeon.mythic_level + 1);
         const completionLevelTwo = Math.max(2, dungeon.mythic_level + 2);
         const completionLevelThree = Math.max(2, dungeon.mythic_level + 3);
+        const completionGainOne = getScoreGainForLevel(dungeon, completionLevelOne, dungeonService, dungeonScoreService);
+        const completionGainTwo = getScoreGainForLevel(dungeon, completionLevelTwo, dungeonService, dungeonScoreService);
+        const completionGainThree = getScoreGainForLevel(dungeon, completionLevelThree, dungeonService, dungeonScoreService);
 
         return [
             dungeon.dungeon,
             `+${dungeon.mythic_level}`,
             `+${dungeon.target_level}`,
             `+${Math.ceil(dungeon.potentialMinimumScore)}`,
-            `+${getScoreGainForLevel(dungeon, completionLevelOne, dungeonService, dungeonScoreService)}`,
-            `+${getScoreGainForLevel(dungeon, completionLevelTwo, dungeonService, dungeonScoreService)}`,
-            `+${getScoreGainForLevel(dungeon, completionLevelThree, dungeonService, dungeonScoreService)}`,
+            `+${completionLevelOne} (+${completionGainOne})`,
+            `+${completionLevelTwo} (+${completionGainTwo})`,
+            `+${completionLevelThree} (+${completionGainThree})`,
         ];
     });
 
     const dungeonTable = buildTableFromJson({
         title: '',
-        heading: ['Dungeon', 'Current', 'Target', 'Gain', 'Completion +1', 'Completion +2', 'Completion +3'],
+        heading: ['Dungeon', 'Current', 'Target', 'Gain@Target', 'Run +1 key', 'Run +2 keys', 'Run +3 keys'],
         rows: dungeonRows,
     });
 
