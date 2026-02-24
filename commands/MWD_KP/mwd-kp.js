@@ -396,9 +396,6 @@ module.exports = {
                 }
             }
 
-            if (isSlashCommand) {
-                await interaction.reply('Working on it...');
-            }
             await method(interaction, infoParts[0]);
             for (let i = 1; i < infoParts.length; i++) {
                 await method(interaction, infoParts[i], false);
