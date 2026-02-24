@@ -389,7 +389,12 @@ module.exports = {
                     for (const part of infoParts) {
                         await interaction.channel.send('```' + part.trim() + '```');
                     }
-                    await interaction.deleteReply();
+                    // Best-effort cleanup. If this fails, do not fall back to interaction-based output.
+                    try {
+                        await interaction.deleteReply();
+                    } catch (deleteError) {
+                        console.error(deleteError);
+                    }
                     return;
                 } catch (standaloneError) {
                     console.error(standaloneError);
