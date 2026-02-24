@@ -218,10 +218,11 @@ function buildHelpOutput() {
         title: '',
         heading: ['Scoring Formula', 'Value'],
         rows: [
-            ['Base', '125'],
+            ['Base constant', '125'],
             ['Per key level', '15 x keyLevel'],
             ['Affix score', '0/15/30/45/60 by key bracket'],
             ['Total score', '125 + (15 x keyLevel) + affixScore'],
+            ['+2 example', '125 + (15 x 2) + 0 = 155'],
         ]
     });
     const affixBracketString = buildTableFromJson({
