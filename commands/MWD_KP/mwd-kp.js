@@ -270,13 +270,19 @@ function buildInfoOutput() {
     return `\n${infoTable}`;
 }
 
-function getScoreGainForLevel(dungeon, level, dungeonService, dungeonScoreService) {
-    const scoreAtLevel = dungeonScoreService
+function getScoreForTimedCompletion(level, completionLevel, dungeonService, dungeonScoreService) {
+    const completionBonusByLevel = {
+        1: 0,
+        2: 7.5,
+        3: 15,
+    };
+
+    const baseScoreAtLevel = dungeonScoreService
         .setLevel(level)
         .setAffixes(dungeonService.getAffixesForLevel(level))
         .calculateScore();
 
-    return Math.ceil(scoreAtLevel - dungeon.score);
+    return baseScoreAtLevel + (completionBonusByLevel[completionLevel] ?? 0);
 }
 
 function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons) {
@@ -284,27 +290,30 @@ function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons
     const dungeonScoreService = new DungeonScoreService();
     const dungeonRows = sortedDungeons.map((dungeon) => {
         const targetLevel = Number(dungeon.target_level);
-        const completionLevelOne = Math.max(2, targetLevel + 1);
-        const completionLevelTwo = Math.max(2, targetLevel + 2);
-        const completionLevelThree = Math.max(2, targetLevel + 3);
-        const completionGainOne = getScoreGainForLevel(dungeon, completionLevelOne, dungeonService, dungeonScoreService);
-        const completionGainTwo = getScoreGainForLevel(dungeon, completionLevelTwo, dungeonService, dungeonScoreService);
-        const completionGainThree = getScoreGainForLevel(dungeon, completionLevelThree, dungeonService, dungeonScoreService);
+        const completionGainOne = Math.ceil(
+            getScoreForTimedCompletion(targetLevel, 1, dungeonService, dungeonScoreService) - dungeon.score
+        );
+        const completionGainTwo = Math.ceil(
+            getScoreForTimedCompletion(targetLevel, 2, dungeonService, dungeonScoreService) - dungeon.score
+        );
+        const completionGainThree = Math.ceil(
+            getScoreForTimedCompletion(targetLevel, 3, dungeonService, dungeonScoreService) - dungeon.score
+        );
 
         return [
             dungeon.dungeon,
             `+${dungeon.mythic_level}`,
             `+${dungeon.target_level}`,
             `+${Math.ceil(dungeon.potentialMinimumScore)}`,
-            `+${completionLevelOne} (+${completionGainOne})`,
-            `+${completionLevelTwo} (+${completionGainTwo})`,
-            `+${completionLevelThree} (+${completionGainThree})`,
+            `+${completionGainOne}`,
+            `+${completionGainTwo}`,
+            `+${completionGainThree}`,
         ];
     });
 
     const dungeonTable = buildTableFromJson({
         title: '',
-        heading: ['Dungeon', 'Current', 'Target', 'Gain@Target', 'Target+1 Gain', 'Target+2 Gain', 'Target+3 Gain'],
+        heading: ['Dungeon', 'Current', 'Target', 'Gain@Target', 'Completion +1', 'Completion +2', 'Completion +3'],
         rows: dungeonRows,
     });
 
