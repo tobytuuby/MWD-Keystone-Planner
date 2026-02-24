@@ -240,17 +240,6 @@ function buildHelpOutput() {
 }
 
 function buildInfoOutputParts() {
-    const infoTable = buildTableFromJson({
-        title: '',
-        heading: ['MWD Keystone Planner', 'Details'],
-        rows: [
-            ['Description', 'Helps WoW players improve Mythic+ score by recommending high-impact dungeons.'],
-            ['GitHub', 'https://github.com/tobytuuby/MWD-Keystone-Planner'],
-            ['Website', 'https://tobytuuby.github.io/MWD-Keystone-Planner/'],
-            ['Community', 'https://github.com/tobytuuby/MWD-Keystone-Planner/discussions'],
-            ['Issues', 'https://github.com/tobytuuby/MWD-Keystone-Planner/issues'],
-        ]
-    });
     const formulaString = buildTableFromJson({
         title: '',
         heading: ['Scoring Formula', 'Value'],
@@ -280,8 +269,17 @@ function buildInfoOutputParts() {
         rows: buildKeyLevelScoreRows(),
     });
 
+    const infoHeader = [
+        'MWD Keystone Planner',
+        'Description: Helps WoW players improve Mythic+ score by recommending high-impact dungeons.',
+        'GitHub: https://github.com/tobytuuby/MWD-Keystone-Planner',
+        'Website: https://tobytuuby.github.io/MWD-Keystone-Planner/',
+        'Community: https://github.com/tobytuuby/MWD-Keystone-Planner/discussions',
+        'Issues: https://github.com/tobytuuby/MWD-Keystone-Planner/issues',
+    ].join('\n');
+
     return [
-        `\n${infoTable}\n\n${formulaString}\n\n${affixBracketString}`,
+        `\n${infoHeader}\n\n${formulaString}\n\n${affixBracketString}`,
         `\n${scoreString}`,
     ];
 }
