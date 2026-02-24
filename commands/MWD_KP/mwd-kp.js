@@ -383,22 +383,18 @@ module.exports = {
         if (normalizedMessage === 'info' || normalizedMessage === '--info') {
             const infoParts = buildInfoOutputParts();
 
-            if (isSlashCommand && interaction.channel && typeof interaction.channel.send === 'function') {
-                try {
-                    await interaction.deferReply({ ephemeral: true });
-                    for (const part of infoParts) {
-                        await interaction.channel.send('```' + part.trim() + '```');
-                    }
-                    // Best-effort cleanup. If this fails, do not fall back to interaction-based output.
-                    try {
-                        await interaction.deleteReply();
-                    } catch (deleteError) {
-                        console.error(deleteError);
-                    }
-                    return;
-                } catch (standaloneError) {
-                    console.error(standaloneError);
+            if (isSlashCommand) {
+                await interaction.reply({
+                    content: '```' + infoParts[0].trim() + '```',
+                    ephemeral: true,
+                });
+                for (let i = 1; i < infoParts.length; i++) {
+                    await interaction.followUp({
+                        content: '```' + infoParts[i].trim() + '```',
+                        ephemeral: true,
+                    });
                 }
+                return;
             }
 
             await method(interaction, infoParts[0]);
