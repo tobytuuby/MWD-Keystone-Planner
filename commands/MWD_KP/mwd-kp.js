@@ -378,6 +378,20 @@ module.exports = {
         }
         if (normalizedMessage === 'info' || normalizedMessage === '--info') {
             const infoParts = buildInfoOutputParts();
+
+            // Send standalone messages so each section is independent and avoids reply-context artifacts.
+            if (isSlashCommand && interaction.channel && typeof interaction.channel.send === 'function') {
+                try {
+                    await interaction.deleteReply();
+                    for (const part of infoParts) {
+                        await interaction.channel.send('```' + part.trim() + '```');
+                    }
+                    return;
+                } catch (standaloneError) {
+                    console.error(standaloneError);
+                }
+            }
+
             await method(interaction, infoParts[0]);
             for (let i = 1; i < infoParts.length; i++) {
                 await method(interaction, infoParts[i], false);
