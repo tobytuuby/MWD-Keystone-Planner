@@ -247,7 +247,7 @@ function buildInfoOutput() {
             ['Description', 'Helps WoW players improve Mythic+ score by recommending high-impact dungeons.'],
             ['GitHub', 'https://github.com/tobytuuby/MWD-Keystone-Planner'],
             ['Website', 'https://tobytuuby.github.io/MWD-Keystone-Planner/'],
-            ['Discord', 'https://discord.gg/ucgP4dvmtQ'],
+            ['Community', 'https://github.com/tobytuuby/MWD-Keystone-Planner/discussions'],
             ['Support', 'https://ko-fi.com/mythicratinghelper'],
         ]
     });
