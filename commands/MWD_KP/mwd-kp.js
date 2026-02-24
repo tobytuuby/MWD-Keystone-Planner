@@ -240,34 +240,39 @@ function buildHelpOutput() {
 }
 
 function buildInfoOutputParts() {
+    const infoTable = buildTableFromJson({
+        title: '',
+        heading: ['MWD Keystone Planner', 'Details'],
+        rows: [
+            ['Description', 'Helps WoW players improve Mythic+ score by recommending high-impact dungeons.'],
+            ['GitHub', 'https://github.com/tobytuuby/MWD-Keystone-Planner'],
+            ['Website', 'https://tobytuuby.github.io/MWD-Keystone-Planner/'],
+            ['Community', 'https://github.com/tobytuuby/MWD-Keystone-Planner/discussions'],
+            ['Issues', 'https://github.com/tobytuuby/MWD-Keystone-Planner/issues'],
+        ]
+    });
     const scoreString = buildTableFromJson({
         title: '',
         heading: ['Keystone Level', 'Base Score (Completion)'],
         rows: buildKeyLevelScoreRows(),
     });
 
-    const infoHeader = [
-        'MWD Keystone Planner',
-        'Description: Helps WoW players improve Mythic+ score by recommending high-impact dungeons.',
-        'GitHub: https://github.com/tobytuuby/MWD-Keystone-Planner',
-        'Website: https://tobytuuby.github.io/MWD-Keystone-Planner/',
-        'Community: https://github.com/tobytuuby/MWD-Keystone-Planner/discussions',
-        'Issues: https://github.com/tobytuuby/MWD-Keystone-Planner/issues',
-    ].join('\n');
-
-    const formulaDetails = [
-        'Scoring:',
-        '- Keystone range: starts at +2 and scales upward',
-        '- Base score at +2: 155',
-        '- Per key level: +15 score per level',
-        '- Affix score brackets: +2-+3=0, +4-+6=15, +7-+9=30, +10-+11=45, +12+=60',
-        '- Total score formula: 125 + (15 x keyLevel) + affixScore',
-    ].join('\n');
+    const formulaTable = buildTableFromJson({
+        title: '',
+        heading: ['Scoring', 'Value'],
+        rows: [
+            ['Keystone range', 'starts at +2 and scales upward'],
+            ['Base score at +2', '155'],
+            ['Per key level', '+15 score per level'],
+            ['Affix brackets', '+2-+3=0, +4-+6=15, +7-+9=30, +10-+11=45, +12+=60'],
+            ['Total score formula', '125 + (15 x keyLevel) + affixScore'],
+        ]
+    });
 
     return [
-        `\n${infoHeader}`,
+        `\n${infoTable}`,
         `\n${scoreString}`,
-        `\n${formulaDetails}`,
+        `\n${formulaTable}`,
     ];
 }
 
@@ -366,37 +371,43 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction, message, isSlashCommand) {
-        if (isSlashCommand) {
-            await interaction.reply('Working on it...');
-        }
-
-        const method = isSlashCommand ? sendStructuredResponseToUserViaSlashCommand : sendStructuredResponseToUser;
         const normalizedMessage = message.trim().toLowerCase().replace(/[?!.]+$/, '');
+        const method = isSlashCommand ? sendStructuredResponseToUserViaSlashCommand : sendStructuredResponseToUser;
 
         if (normalizedMessage === 'help' || normalizedMessage === '--help') {
+            if (isSlashCommand) {
+                await interaction.reply('Working on it...');
+            }
             return method(interaction, buildHelpOutput());
         }
         if (normalizedMessage === 'info' || normalizedMessage === '--info') {
             const infoParts = buildInfoOutputParts();
 
-            // Send standalone messages so each section is independent and avoids reply-context artifacts.
             if (isSlashCommand && interaction.channel && typeof interaction.channel.send === 'function') {
                 try {
-                    await interaction.deleteReply();
+                    await interaction.deferReply({ ephemeral: true });
                     for (const part of infoParts) {
                         await interaction.channel.send('```' + part.trim() + '```');
                     }
+                    await interaction.deleteReply();
                     return;
                 } catch (standaloneError) {
                     console.error(standaloneError);
                 }
             }
 
+            if (isSlashCommand) {
+                await interaction.reply('Working on it...');
+            }
             await method(interaction, infoParts[0]);
             for (let i = 1; i < infoParts.length; i++) {
                 await method(interaction, infoParts[i], false);
             }
             return;
+        }
+
+        if (isSlashCommand) {
+            await interaction.reply('Working on it...');
         }
 
         const args = parseMessageForArgs(message, interaction.channel);
