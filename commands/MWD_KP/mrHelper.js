@@ -278,6 +278,8 @@ module.exports = {
             let errorMessageToSend = 'There was an error getting data from the server. Please try again.';
             if (err.response) {
                 errorMessageToSend = `Error: ${err.response.data.message}`;
+            } else if (err.message) {
+                errorMessageToSend = `Error: ${err.message}`;
             }
 
             handleError(err, interaction);

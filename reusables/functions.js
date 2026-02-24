@@ -1,5 +1,6 @@
 const ascii = require('ascii-table');
 const { EmbedBuilder } = require('discord.js');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -208,7 +209,7 @@ async function generateMythicImage(data) {
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    const bg = await loadImage('public/bg.png');
+    const bg = await loadImage(path.join(__dirname, '..', 'public', 'bg.png'));
     ctx.drawImage(bg, 0, 0, width, height);
 
     ctx.fillStyle = 'rgba(0,0,0,0.5)';
