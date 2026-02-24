@@ -2,6 +2,7 @@ const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 const { default: axios } = require('axios');
 const {
     buildTableFromJson,
+    getHelpJson,
     sendStructuredResponseToUser,
     sortDungeonsBy,
     sendStructuredResponseToUserViaSlashCommand,
@@ -194,6 +195,44 @@ function parseMessageForArgs(message, messageChannel) {
     return dataToReturn;
 }
 
+function buildKeyLevelScoreRows() {
+    const dungeonScoreService = new DungeonScoreService();
+    const dungeonService = new DungeonService({});
+    const rows = [];
+
+    for (let level = 2; level <= 20; level++) {
+        const score = dungeonScoreService
+            .setLevel(level)
+            .setAffixes(dungeonService.getAffixesForLevel(level))
+            .calculateScore();
+
+        rows.push([`+${level}`, score]);
+    }
+
+    return rows;
+}
+
+function buildHelpOutput() {
+    const tableString = buildTableFromJson(getHelpJson());
+    const exampleString = buildTableFromJson({
+        title: '',
+        heading: 'Examples',
+        rows: [
+            ['/mwd-kp help'],
+            ['/mwd-kp eu/argent-dawn/ellorett'],
+            ['/mwd-kp eu/argent-dawn/ellorett --best-runs'],
+            ['/mwd-kp eu/argent-dawn/ellorett --simulate 15'],
+        ]
+    });
+    const scoreString = buildTableFromJson({
+        title: '',
+        heading: ['Keystone Level', 'Base Score (Completion)'],
+        rows: buildKeyLevelScoreRows(),
+    });
+
+    return `\n${tableString}\n\n${exampleString}\n\n${scoreString}`;
+}
+
 function getScoreGainForLevel(dungeon, level, dungeonService, dungeonScoreService) {
     const scoreAtLevel = dungeonScoreService
         .setLevel(level)
@@ -285,6 +324,11 @@ module.exports = {
         }
 
         const method = isSlashCommand ? sendStructuredResponseToUserViaSlashCommand : sendStructuredResponseToUser;
+        const normalizedMessage = message.trim().toLowerCase();
+
+        if (normalizedMessage === 'help' || normalizedMessage === '--help') {
+            return method(interaction, buildHelpOutput());
+        }
 
         const args = parseMessageForArgs(message, interaction.channel);
 
