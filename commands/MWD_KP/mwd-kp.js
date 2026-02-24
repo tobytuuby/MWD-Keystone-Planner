@@ -239,7 +239,7 @@ function buildHelpOutput() {
     return `\n${tableString}\n\n${quickGuideString}\n\n${exampleString}`;
 }
 
-function buildInfoOutput() {
+function buildInfoOutputParts() {
     const infoTable = buildTableFromJson({
         title: '',
         heading: ['MWD Keystone Planner', 'Details'],
@@ -280,7 +280,10 @@ function buildInfoOutput() {
         rows: buildKeyLevelScoreRows(),
     });
 
-    return `\n${infoTable}\n\n${formulaString}\n\n${affixBracketString}\n\n${scoreString}`;
+    return [
+        `\n${infoTable}\n\n${formulaString}\n\n${affixBracketString}`,
+        `\n${scoreString}`,
+    ];
 }
 
 function getScoreForTimedCompletion(level, completionLevel, dungeonService, dungeonScoreService) {
@@ -389,7 +392,9 @@ module.exports = {
             return method(interaction, buildHelpOutput());
         }
         if (normalizedMessage === 'info' || normalizedMessage === '--info') {
-            return method(interaction, buildInfoOutput());
+            const infoParts = buildInfoOutputParts();
+            await method(interaction, infoParts[0]);
+            return method(interaction, infoParts[1], false);
         }
 
         const args = parseMessageForArgs(message, interaction.channel);
