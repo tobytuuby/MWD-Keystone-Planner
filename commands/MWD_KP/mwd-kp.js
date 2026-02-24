@@ -218,8 +218,9 @@ function buildHelpOutput() {
         title: '',
         heading: ['Scoring Formula', 'Value'],
         rows: [
-            ['Base constant', '125'],
-            ['Per key level', '15 x keyLevel'],
+            ['Keystone range', 'Starts at +2 and scales upward'],
+            ['Base score at +2', '155'],
+            ['Per key level', '+15 score per level'],
             ['Affix score', '0/15/30/45/60 by key bracket'],
             ['Total score', '125 + (15 x keyLevel) + affixScore'],
             ['+2 example', '125 + (15 x 2) + 0 = 155'],
