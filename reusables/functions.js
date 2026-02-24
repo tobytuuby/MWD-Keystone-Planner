@@ -107,7 +107,8 @@ const getHelpJson = () => {
         title: '',
         heading: ['Argument', 'Description', 'Required'],
         rows: [
-            ['--simulate', 'Simulate a player\'s rating for running every dungeon on an input keystone level', '❌'],
+            ['--best-runs', 'Use best-run data mode instead of alternate runs', 'No'],
+            ['--simulate', 'Simulate a player\'s rating for running every dungeon on an input keystone level', 'No'],
         ]
     };
 };
@@ -345,3 +346,5 @@ module.exports = {
     getHelpJson,
     generateMythicImage
 };
+
+
