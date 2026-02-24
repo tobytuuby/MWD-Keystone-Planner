@@ -1,0 +1,36 @@
+{
+  "name": "mythic-bot",
+  "version": "3.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint .",
+    "dev": "nodemon index.js",
+    "heroku-postbuild": "node deploy-commands.js"
+  },
+  "author": "Cory Meikle",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^2.6.0",
+    "@napi-rs/canvas": "^0.1.89",
+    "ascii-table": "^0.0.9",
+    "axios": "^0.24.0",
+    "discord-api-types": "^0.37.120",
+    "discord.js": "^14.25.1",
+    "dotenv": "^10.0.0",
+    "fs": "^0.0.1-security"
+  },
+  "engines": {
+    "node": "16.13.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "eslint": "^8.4.1",
+    "eslint-plugin-jest": "^25.3.4",
+    "jest": "^29.7.0",
+    "nodemon": "^2.0.15"
+  }
+}
