@@ -254,6 +254,22 @@ function buildHelpOutput() {
     return `\n${tableString}\n\n${formulaString}\n\n${affixBracketString}\n\n${exampleString}\n\n${scoreString}`;
 }
 
+function buildInfoOutput() {
+    const infoTable = buildTableFromJson({
+        title: '',
+        heading: ['MWD Keystone Planner', 'Details'],
+        rows: [
+            ['Description', 'Helps WoW players improve Mythic+ score by recommending high-impact dungeons.'],
+            ['GitHub', 'https://github.com/tobytuuby/MWD-Keystone-Planner'],
+            ['Website', 'https://tobytuuby.github.io/MWD-Keystone-Planner/'],
+            ['Discord', 'https://discord.gg/ucgP4dvmtQ'],
+            ['Support', 'https://ko-fi.com/mythicratinghelper'],
+        ]
+    });
+
+    return `\n${infoTable}`;
+}
+
 function getScoreGainForLevel(dungeon, level, dungeonService, dungeonScoreService) {
     const scoreAtLevel = dungeonScoreService
         .setLevel(level)
@@ -349,6 +365,9 @@ module.exports = {
 
         if (normalizedMessage === 'help' || normalizedMessage === '--help') {
             return method(interaction, buildHelpOutput());
+        }
+        if (normalizedMessage === 'info' || normalizedMessage === '--info') {
+            return method(interaction, buildInfoOutput());
         }
 
         const args = parseMessageForArgs(message, interaction.channel);
