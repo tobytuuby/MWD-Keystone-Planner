@@ -93,8 +93,11 @@ const sendEmbeddedMessage = (messageChannel, messageObj) => {
         })
         .setDescription(messageObj.description)
         .addFields(messageObj.fields)
-        .setFooter({ text: messageObj.footer ?? '' })
         .setTimestamp();
+
+    if (messageObj.footer) {
+        embedMessage.setFooter({ text: messageObj.footer });
+    }
 
     try {
         messageChannel.reply({

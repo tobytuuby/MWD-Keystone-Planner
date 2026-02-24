@@ -9,6 +9,7 @@ module.exports = {
         .setDescription('Get general information about MWD Keystone Planner'),
     async execute(interaction) {
         const messageObject = {
+            color: '#5865F2',
             title: 'MWD Keystone Planner',
             description: 'MWD Keystone Planner helps WoW players improve Mythic+ score by analyzing runs and recommending the best dungeons to run next.',
             author: {

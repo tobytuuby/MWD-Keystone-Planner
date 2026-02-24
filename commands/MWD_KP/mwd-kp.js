@@ -193,6 +193,21 @@ function parseMessageForArgs(message, messageChannel) {
     return dataToReturn;
 }
 
+function buildFallbackSummary(score, totalPoints, sortedDungeons) {
+    const topDungeons = sortedDungeons
+        .slice(0, 5)
+        .map((dungeon) => `${dungeon.dungeon}: +${Math.ceil(dungeon.potentialMinimumScore)} (${dungeon.mythic_level} -> ${dungeon.target_level})`)
+        .join('\n');
+
+    return (
+        `Current Score: ${Math.ceil(score)}\n`+
+        `Minimum Total Score Increase: +${totalPoints}\n`+
+        `Score after all runs: ${Math.ceil(score) + totalPoints}\n\n`+
+        'Top recommendations:\n'+
+        topDungeons
+    );
+}
+
 function buildRequestUrl(args) {
     const name = encodeURIComponent(args.name);
 
@@ -257,22 +272,27 @@ module.exports = {
 
             console.log(`Score Generated for: ${args.region}/${args.realm}/${args.name} Type: ${args.isSimulateCommand ? 'simulate' : 'normal'}`);
 
-            const image = await generateMythicImage({
-                score: Math.ceil(allData.currentScore),
-                totalScoreIncrease: totalPoints,
-                dungeons: sortedDungeons,
-                message,
-            });
+            try {
+                const image = await generateMythicImage({
+                    score: Math.ceil(allData.currentScore),
+                    totalScoreIncrease: totalPoints,
+                    dungeons: sortedDungeons,
+                    message,
+                });
 
-            const fileName = message.split('/');
-            fileName.push(new Date().toDateString());
-            const attachment = new AttachmentBuilder(image, { name: fileName.join('-') + '.png' });
+                const fileName = message.split('/');
+                fileName.push(new Date().toDateString());
+                const attachment = new AttachmentBuilder(image, { name: fileName.join('-') + '.png' });
 
-            return interaction.editReply({
-                files: [attachment],
-                content: 'Finding MWD Keystone Planner helpful? [Please consider supporting me](<https://ko-fi.com/mythicratinghelper>)\n'+
-                    'Found an issue? [Report it on GitHub](<https://github.com/tobytuuby/MWD-Keystone-Planner>)\n'
-            });
+                return interaction.editReply({
+                    files: [attachment],
+                    content: 'Finding MWD Keystone Planner helpful? [Please consider supporting me](<https://ko-fi.com/mythicratinghelper>)\n'+
+                        'Found an issue? [Report it on GitHub](<https://github.com/tobytuuby/MWD-Keystone-Planner>)\n'
+                });
+            } catch (imageError) {
+                console.error(imageError);
+                return method(interaction, buildFallbackSummary(allData.currentScore, totalPoints, sortedDungeons));
+            }
         } catch (err) {
             console.error(err);
             let errorMessageToSend = 'There was an error getting data from the server. Please try again.';
