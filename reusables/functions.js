@@ -44,13 +44,37 @@ const buildTableFromJson = (jsonData) => {
     return table.fromJSON(jsonData).toString();
 };
 
+const chunkStructuredMessage = (response, maxContentLen = 1900) => {
+    const chunks = [];
+    let remaining = response;
+
+    while (remaining.length > maxContentLen) {
+        let splitAt = remaining.lastIndexOf('\n', maxContentLen);
+        if (splitAt < 1) {
+            splitAt = maxContentLen;
+        }
+        chunks.push(remaining.slice(0, splitAt));
+        remaining = remaining.slice(splitAt).replace(/^\n+/, '');
+    }
+
+    if (remaining.length > 0) {
+        chunks.push(remaining);
+    }
+
+    return chunks;
+};
+
 const sendStructuredResponseToUser = async (interaction, response) => {
     if (process.env.DEBUG) {
         response += '\n DEBUG';
     }
 
     try {
-        await interaction.reply('```' + response + '```');
+        const chunks = chunkStructuredMessage(response);
+        await interaction.reply('```' + chunks[0] + '```');
+        for (let i = 1; i < chunks.length; i++) {
+            await interaction.followUp('```' + chunks[i] + '```');
+        }
     } catch (err) {
         console.log(err);
     }
@@ -62,10 +86,16 @@ const sendStructuredResponseToUserViaSlashCommand = async (interaction, response
     }
 
     try {
+        const chunks = chunkStructuredMessage(response);
         if (shouldEdit) {
-            await interaction.editReply('```' + response + '```');
+            await interaction.editReply('```' + chunks[0] + '```');
+            for (let i = 1; i < chunks.length; i++) {
+                await interaction.followUp('```' + chunks[i] + '```');
+            }
         } else {
-            await interaction.followUp('```' + response + '```');
+            for (const chunk of chunks) {
+                await interaction.followUp('```' + chunk + '```');
+            }
         }
     } catch (err) {
         console.log(err);
