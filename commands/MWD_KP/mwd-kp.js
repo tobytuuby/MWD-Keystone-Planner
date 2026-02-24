@@ -248,7 +248,7 @@ function buildInfoOutput() {
             ['GitHub', 'https://github.com/tobytuuby/MWD-Keystone-Planner'],
             ['Website', 'https://tobytuuby.github.io/MWD-Keystone-Planner/'],
             ['Community', 'https://github.com/tobytuuby/MWD-Keystone-Planner/discussions'],
-            ['Support', 'https://ko-fi.com/mythicratinghelper'],
+            ['Issues', 'https://github.com/tobytuuby/MWD-Keystone-Planner/issues'],
         ]
     });
     const formulaString = buildTableFromJson({
