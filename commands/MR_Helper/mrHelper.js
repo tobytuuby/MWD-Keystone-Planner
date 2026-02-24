@@ -25,7 +25,8 @@ async function getDungeonData(args) {
 function calculateSimulatedLevel(data, levelToSimulate, seasonDungeons) {
     const dungeonService = new DungeonService(seasonDungeons);
     const dungeonScoreService = new DungeonScoreService();
-    const dungeons = dungeonService.buildMissingDungeons(data.mythic_plus_best_runs);
+    const bestRuns = Array.isArray(data.mythic_plus_best_runs) ? data.mythic_plus_best_runs : [];
+    const dungeons = dungeonService.buildMissingDungeons(bestRuns);
     let currentScore = 0;
 
     for (const dungeon of dungeons) {
@@ -53,7 +54,8 @@ function calculateSimulatedLevel(data, levelToSimulate, seasonDungeons) {
 
 function calculateMinimumImprovements(data, seasonDungeons) {
     const dungeonService = new DungeonService(seasonDungeons);
-    const dungeons = dungeonService.buildMissingDungeons(data.mythic_plus_best_runs);
+    const bestRuns = Array.isArray(data.mythic_plus_best_runs) ? data.mythic_plus_best_runs : [];
+    const dungeons = dungeonService.buildMissingDungeons(bestRuns);
     const dungeonScoreService = new DungeonScoreService();
     let currentScore = 0;
 
@@ -200,14 +202,10 @@ function buildRequestUrl(args) {
 async function requestData(args) {
     const url = buildRequestUrl(args);
 
-    try {
-        return await axios({
-            method: 'get',
-            url: url,
-        });
-    } catch (error) {
-        console.log('error', error);
-    }
+    return axios({
+        method: 'get',
+        url: url,
+    });
 }
 
 const handleError = async (error, interaction) => {
