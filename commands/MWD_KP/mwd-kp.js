@@ -372,7 +372,7 @@ module.exports = {
         }
 
         const method = isSlashCommand ? sendStructuredResponseToUserViaSlashCommand : sendStructuredResponseToUser;
-        const normalizedMessage = message.trim().toLowerCase();
+        const normalizedMessage = message.trim().toLowerCase().replace(/[?!.]+$/, '');
 
         if (normalizedMessage === 'help' || normalizedMessage === '--help') {
             return method(interaction, buildHelpOutput());
@@ -384,7 +384,7 @@ module.exports = {
         const args = parseMessageForArgs(message, interaction.channel);
 
         if (args.error) {
-            return;
+            return method(interaction, 'Invalid command format. Use `/mwd-kp command: help` for usage examples.');
         }
 
         try {
