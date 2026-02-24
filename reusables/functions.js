@@ -342,6 +342,7 @@ module.exports = {
     getKeystoneLevelToRun,
     getNumAffixesForLevel,
     arrayDiff,
+    chunkStructuredMessage,
     sendStructuredResponseToUserViaSlashCommand,
     getHelpJson,
     generateMythicImage

@@ -2,6 +2,7 @@ const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 const { default: axios } = require('axios');
 const {
     buildTableFromJson,
+    chunkStructuredMessage,
     getHelpJson,
     sendStructuredResponseToUser,
     sortDungeonsBy,
@@ -276,6 +277,31 @@ function buildInfoOutputParts() {
     ];
 }
 
+async function sendEphemeralStructuredResponse(interaction, response, shouldReply = true) {
+    const chunks = chunkStructuredMessage(response);
+
+    if (shouldReply) {
+        await interaction.reply({
+            content: '```' + chunks[0] + '```',
+            ephemeral: true,
+        });
+        for (let i = 1; i < chunks.length; i++) {
+            await interaction.followUp({
+                content: '```' + chunks[i] + '```',
+                ephemeral: true,
+            });
+        }
+        return;
+    }
+
+    for (const chunk of chunks) {
+        await interaction.followUp({
+            content: '```' + chunk + '```',
+            ephemeral: true,
+        });
+    }
+}
+
 function getScoreForTimedCompletion(level, completionLevel, dungeonService, dungeonScoreService) {
     const completionBonusByLevel = {
         1: 0,
@@ -376,7 +402,8 @@ module.exports = {
 
         if (normalizedMessage === 'help' || normalizedMessage === '--help') {
             if (isSlashCommand) {
-                await interaction.reply('Working on it...');
+                await sendEphemeralStructuredResponse(interaction, buildHelpOutput());
+                return;
             }
             return method(interaction, buildHelpOutput());
         }
@@ -384,15 +411,9 @@ module.exports = {
             const infoParts = buildInfoOutputParts();
 
             if (isSlashCommand) {
-                await interaction.reply({
-                    content: '```' + infoParts[0].trim() + '```',
-                    ephemeral: true,
-                });
+                await sendEphemeralStructuredResponse(interaction, infoParts[0].trim());
                 for (let i = 1; i < infoParts.length; i++) {
-                    await interaction.followUp({
-                        content: '```' + infoParts[i].trim() + '```',
-                        ephemeral: true,
-                    });
+                    await sendEphemeralStructuredResponse(interaction, infoParts[i].trim(), false);
                 }
                 return;
             }
