@@ -6,11 +6,11 @@ const {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('info')
-        .setDescription('Get general information about Mythic Rating Helper'),
+        .setDescription('Get general information about MWD Keystone Planner'),
     async execute(interaction) {
         const messageObject = {
-            title: 'Mythic Rating Helper',
-            description: 'Mythic Rating Helper is a bot designed to help WoW players improve their mythic rating by analyzing their runs, and informing them of their most optimal dungeons to run.',
+            title: 'MWD Keystone Planner',
+            description: 'MWD Keystone Planner helps WoW players improve Mythic+ score by analyzing runs and recommending the best dungeons to run next.',
             author: {
                 name: 'Coryrin',
                 link: 'https://www.corymeikle.com/',
@@ -19,7 +19,7 @@ module.exports = {
             fields: [
                 {
                     name: 'GitHub',
-                    value: '[Code](https://github.com/Coryrin/mr-helper)',
+                    value: '[Code](https://github.com/tobytuuby/MWD-Keystone-Planner)',
                     inline: true,
                 },
                 {
@@ -29,7 +29,7 @@ module.exports = {
                 },
                 {
                     name: 'Website',
-                    value: '[Check out our website!](https://www.mr-helper.xyz/)',
+                    value: '[Check out our website!](https://tobytuuby.github.io/MWD-Keystone-Planner/)',
                     inline: true,
                 },
                 {

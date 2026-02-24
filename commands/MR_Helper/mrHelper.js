@@ -219,7 +219,7 @@ const handleError = async (error, interaction) => {
 
         owner.send(
             'Hey! It looks like I don\'t have the necessary permissions to function properly in your server.\n'+
-            'Please reinvite me using the link on our website: https://www.mr-helper.xyz/\n'+
+            'Please reinvite me using the link on our website: https://tobytuuby.github.io/MWD-Keystone-Planner/\n'+
             'This is an automated message. If you have any queries, please reach out to coryrin on discord, or use the development discord group.'
         );
 
@@ -229,7 +229,7 @@ const handleError = async (error, interaction) => {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('mr-helper')
+        .setName('mwd-kp')
         .setDescription('Get dungeons to run to improve overall mythic rating')
         .addStringOption(option =>
             option.setName('command')
@@ -272,8 +272,8 @@ module.exports = {
 
             return interaction.editReply({
                 files: [attachment],
-                content: 'Finding Mythic Rating Helper helpful? [Please consider supporting me](<https://ko-fi.com/mythicratinghelper>)\n'+
-                    'Found an issue? [Report it on GitHub](<https://github.com/Coryrin/mr-helper>)\n'
+                content: 'Finding MWD Keystone Planner helpful? [Please consider supporting me](<https://ko-fi.com/mythicratinghelper>)\n'+
+                    'Found an issue? [Report it on GitHub](<https://github.com/tobytuuby/MWD-Keystone-Planner>)\n'
             });
         } catch (err) {
             console.error(err);

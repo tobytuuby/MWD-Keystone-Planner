@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MWD Keystone Planner</title>
+  <meta name="description" content="MWD Keystone Planner helps World of Warcraft players improve Mythic+ score by recommending the best dungeons to run next.">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="brand">MWD Keystone Planner</div>
+      <nav class="menu">
+        <a href="#how-it-works">How It Works</a>
+        <a href="#contribute">Contribute</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="eyebrow">World of Warcraft Mythic+</div>
+      <h1>Plan Your Next Keys With Confidence</h1>
+      <p class="lead">
+        MWD Keystone Planner analyzes a character's current runs and returns the dungeons that can give the best score gains next.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=274878024704&scope=bot%20applications.commands">Add to Discord</a>
+        <a class="btn btn-secondary" href="https://github.com/tobytuuby/MWD-Keystone-Planner">View on GitHub</a>
+      </div>
+      <div class="stats">
+        <div class="card">
+          <strong>/mwd-kp</strong>
+          Primary slash command
+        </div>
+        <div class="card">
+          <strong>Simulate keys</strong>
+          Test score gain by target key level
+        </div>
+        <div class="card">
+          <strong>Fast planning</strong>
+          Clear next-step dungeon output
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <h2>How It Works</h2>
+      <p class="section-intro">The flow is similar to the original MR Helper site, updated for your new bot and slash command.</p>
+      <div class="grid-2">
+        <article class="panel">
+          <h3>1. Enter Character Details</h3>
+          <p>Use the command with a character path and optional flags.</p>
+          <p><code>/mwd-kp eu/argent-dawn/ellorett --simulate 15</code></p>
+        </article>
+        <article class="panel">
+          <h3>2. Bot Pulls Raider.IO Data</h3>
+          <p>The bot reads best runs, fills missing dungeons, and calculates score opportunity for each dungeon.</p>
+        </article>
+        <article class="panel">
+          <h3>3. Sorted Recommendations</h3>
+          <p>Results are sorted by potential score increase so players can pick the most valuable runs first.</p>
+        </article>
+        <article class="panel">
+          <h3>4. Visual Output</h3>
+          <p>The bot returns a generated image summarizing current score, target levels, and projected score gains.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="contribute">
+      <h2>Contribute</h2>
+      <div class="grid-2">
+        <article class="panel">
+          <h3>Open Source Project</h3>
+          <p>Contribute ideas, fixes, and new features through pull requests and issues.</p>
+          <a href="https://github.com/tobytuuby/MWD-Keystone-Planner">GitHub Repository</a>
+        </article>
+        <article class="panel support">
+          <h3>Support The Project</h3>
+          <p>If MWD Keystone Planner helps your group push keys, support helps keep it maintained and online.</p>
+          <a href="https://ko-fi.com/mythicratinghelper">Support on Ko-fi</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p class="section-intro">Send feedback, bug reports, or feature requests.</p>
+      <div class="grid-2">
+        <article class="panel">
+          <h3>Best Contact Channels</h3>
+          <p><a href="https://github.com/tobytuuby/MWD-Keystone-Planner/issues">GitHub Issues</a> for bugs and feature tracking.</p>
+          <p><a href="https://discord.gg/ucgP4dvmtQ">Discord Community</a> for discussion and support.</p>
+        </article>
+        <article class="panel">
+          <h3>Quick Message</h3>
+          <form class="contact-form">
+            <input type="text" placeholder="Name" aria-label="Name">
+            <input type="email" placeholder="Email" aria-label="Email">
+            <select aria-label="Reason">
+              <option>Support</option>
+              <option>Bug Report</option>
+              <option>Feature Request</option>
+            </select>
+            <textarea rows="4" placeholder="Message" aria-label="Message"></textarea>
+            <button class="btn btn-primary" type="button">Submit</button>
+          </form>
+          <p class="note">This demo form is static. Use GitHub Issues for tracked requests.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-links">
+        <a href="./terms-of-service.html">Terms of Service</a>
+        <a href="./privacy-policy.html">Privacy Policy</a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

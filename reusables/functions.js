@@ -216,7 +216,7 @@ async function generateMythicImage(data) {
 
     ctx.fillStyle = '#a78bfa';
     ctx.font = 'bold 42px Sans';
-    ctx.fillText('Mythic Rating Helper', 40, 60);
+    ctx.fillText('MWD Keystone Planner', 40, 60);
 
     ctx.font = '24px Sans';
     ctx.fillStyle = '#e5e7eb';

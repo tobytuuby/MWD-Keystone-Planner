@@ -8,7 +8,7 @@ const {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
-        .setDescription('Get help for using Mythic Rating Helper'),
+        .setDescription('Get help for using MWD Keystone Planner'),
     async execute(interaction) {
         await interaction.reply('Working on it...');
 
@@ -17,9 +17,9 @@ module.exports = {
             title: '',
             heading: 'Examples',
             rows: [
-                ['/mr-helper eu/argent-dawn/ellorett'],
-                ['/mr-helper eu/argent-dawn/ellorett --best-runs'],
-                ['/mr-helper eu/argent-dawn/ellorett --simulate 15'],
+                ['/mwd-kp eu/argent-dawn/ellorett'],
+                ['/mwd-kp eu/argent-dawn/ellorett --best-runs'],
+                ['/mwd-kp eu/argent-dawn/ellorett --simulate 15'],
             ]
         });
         const output = `\n${tableString}\n\n ${exampleString}`;

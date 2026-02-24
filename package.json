@@ -1,7 +1,7 @@
 {
-  "name": "mythic-bot",
+  "name": "mwd-keystone-planner",
   "version": "3.0.0",
-  "description": "",
+  "description": "Discord bot to plan Mythic+ dungeon improvements",
   "main": "index.js",
   "scripts": {
     "test": "jest",
