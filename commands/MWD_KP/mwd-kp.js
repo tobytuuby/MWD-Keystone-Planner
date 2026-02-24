@@ -214,6 +214,27 @@ function buildKeyLevelScoreRows() {
 
 function buildHelpOutput() {
     const tableString = buildTableFromJson(getHelpJson());
+    const formulaString = buildTableFromJson({
+        title: '',
+        heading: ['Scoring Formula', 'Value'],
+        rows: [
+            ['Base', '125'],
+            ['Per key level', '15 x keyLevel'],
+            ['Affix score', '0/15/30/45/60 by key bracket'],
+            ['Total score', '125 + (15 x keyLevel) + affixScore'],
+        ]
+    });
+    const affixBracketString = buildTableFromJson({
+        title: '',
+        heading: ['Key Level', 'Affix Score'],
+        rows: [
+            ['+2 to +3', '0'],
+            ['+4 to +6', '15'],
+            ['+7 to +9', '30'],
+            ['+10 to +11', '45'],
+            ['+12+', '60'],
+        ]
+    });
     const exampleString = buildTableFromJson({
         title: '',
         heading: 'Examples',
@@ -230,7 +251,7 @@ function buildHelpOutput() {
         rows: buildKeyLevelScoreRows(),
     });
 
-    return `\n${tableString}\n\n${exampleString}\n\n${scoreString}`;
+    return `\n${tableString}\n\n${formulaString}\n\n${affixBracketString}\n\n${exampleString}\n\n${scoreString}`;
 }
 
 function getScoreGainForLevel(dungeon, level, dungeonService, dungeonScoreService) {
