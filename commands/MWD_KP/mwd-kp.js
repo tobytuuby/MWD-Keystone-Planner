@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 const { default: axios } = require('axios');
 const {
+    buildTableFromJson,
     sendStructuredResponseToUser,
     sortDungeonsBy,
     sendStructuredResponseToUserViaSlashCommand,
@@ -193,19 +194,44 @@ function parseMessageForArgs(message, messageChannel) {
     return dataToReturn;
 }
 
-function buildFallbackSummary(score, totalPoints, sortedDungeons) {
-    const topDungeons = sortedDungeons
-        .slice(0, 5)
-        .map((dungeon) => `${dungeon.dungeon}: +${Math.ceil(dungeon.potentialMinimumScore)} (${dungeon.mythic_level} -> ${dungeon.target_level})`)
-        .join('\n');
+function getScoreGainForLevel(dungeon, level, dungeonService, dungeonScoreService) {
+    const scoreAtLevel = dungeonScoreService
+        .setLevel(level)
+        .setAffixes(dungeonService.getAffixesForLevel(level))
+        .calculateScore();
 
-    return (
-        `Current Score: ${Math.ceil(score)}\n`+
+    return Math.ceil(scoreAtLevel - dungeon.score);
+}
+
+function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons) {
+    const dungeonService = new DungeonService(seasonDungeons);
+    const dungeonScoreService = new DungeonScoreService();
+    const dungeonRows = sortedDungeons.map((dungeon) => {
+        const completionLevelOne = Math.max(2, dungeon.mythic_level + 1);
+        const completionLevelTwo = Math.max(2, dungeon.mythic_level + 2);
+        const completionLevelThree = Math.max(2, dungeon.mythic_level + 3);
+
+        return [
+            dungeon.dungeon,
+            `+${dungeon.mythic_level}`,
+            `+${dungeon.target_level}`,
+            `+${Math.ceil(dungeon.potentialMinimumScore)}`,
+            `+${getScoreGainForLevel(dungeon, completionLevelOne, dungeonService, dungeonScoreService)}`,
+            `+${getScoreGainForLevel(dungeon, completionLevelTwo, dungeonService, dungeonScoreService)}`,
+            `+${getScoreGainForLevel(dungeon, completionLevelThree, dungeonService, dungeonScoreService)}`,
+        ];
+    });
+
+    const dungeonTable = buildTableFromJson({
+        title: '',
+        heading: ['Dungeon', 'Current', 'Target', 'Gain', 'Completion +1', 'Completion +2', 'Completion +3'],
+        rows: dungeonRows,
+    });
+
+    return `Current Score: ${Math.ceil(score)}\n`+
         `Minimum Total Score Increase: +${totalPoints}\n`+
         `Score after all runs: ${Math.ceil(score) + totalPoints}\n\n`+
-        'Top recommendations:\n'+
-        topDungeons
-    );
+        `${dungeonTable}`;
 }
 
 function buildRequestUrl(args) {
@@ -291,7 +317,8 @@ module.exports = {
                 });
             } catch (imageError) {
                 console.error(imageError);
-                return method(interaction, buildFallbackSummary(allData.currentScore, totalPoints, sortedDungeons));
+                const seasonDungeons = new DetermineSeasonDungeonService().execute();
+                return method(interaction, buildFallbackSummary(allData.currentScore, totalPoints, sortedDungeons, seasonDungeons));
             }
         } catch (err) {
             console.error(err);
