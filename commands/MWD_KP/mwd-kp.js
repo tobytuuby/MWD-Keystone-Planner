@@ -207,9 +207,10 @@ function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons
     const dungeonService = new DungeonService(seasonDungeons);
     const dungeonScoreService = new DungeonScoreService();
     const dungeonRows = sortedDungeons.map((dungeon) => {
-        const completionLevelOne = Math.max(2, dungeon.target_level + 1);
-        const completionLevelTwo = Math.max(2, dungeon.target_level + 2);
-        const completionLevelThree = Math.max(2, dungeon.target_level + 3);
+        const targetLevel = Number(dungeon.target_level);
+        const completionLevelOne = Math.max(2, targetLevel + 1);
+        const completionLevelTwo = Math.max(2, targetLevel + 2);
+        const completionLevelThree = Math.max(2, targetLevel + 3);
         const completionGainOne = getScoreGainForLevel(dungeon, completionLevelOne, dungeonService, dungeonScoreService);
         const completionGainTwo = getScoreGainForLevel(dungeon, completionLevelTwo, dungeonService, dungeonScoreService);
         const completionGainThree = getScoreGainForLevel(dungeon, completionLevelThree, dungeonService, dungeonScoreService);
