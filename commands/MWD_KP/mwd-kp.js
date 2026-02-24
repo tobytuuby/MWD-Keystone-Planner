@@ -240,29 +240,6 @@ function buildHelpOutput() {
 }
 
 function buildInfoOutputParts() {
-    const formulaString = buildTableFromJson({
-        title: '',
-        heading: ['Scoring Formula', 'Value'],
-        rows: [
-            ['Keystone range', 'Starts at +2 and scales upward'],
-            ['Base score at +2', '155'],
-            ['Per key level', '+15 score per level'],
-            ['Affix score', '0/15/30/45/60 by key bracket'],
-            ['Total score', '125 + (15 x keyLevel) + affixScore'],
-            ['+2 example', '125 + (15 x 2) + 0 = 155'],
-        ]
-    });
-    const affixBracketString = buildTableFromJson({
-        title: '',
-        heading: ['Key Level', 'Affix Score'],
-        rows: [
-            ['+2 to +3', '0'],
-            ['+4 to +6', '15'],
-            ['+7 to +9', '30'],
-            ['+10 to +11', '45'],
-            ['+12+', '60'],
-        ]
-    });
     const scoreString = buildTableFromJson({
         title: '',
         heading: ['Keystone Level', 'Base Score (Completion)'],
@@ -278,9 +255,19 @@ function buildInfoOutputParts() {
         'Issues: https://github.com/tobytuuby/MWD-Keystone-Planner/issues',
     ].join('\n');
 
+    const formulaDetails = [
+        'Scoring:',
+        '- Keystone range: starts at +2 and scales upward',
+        '- Base score at +2: 155',
+        '- Per key level: +15 score per level',
+        '- Affix score brackets: +2-+3=0, +4-+6=15, +7-+9=30, +10-+11=45, +12+=60',
+        '- Total score formula: 125 + (15 x keyLevel) + affixScore',
+    ].join('\n');
+
     return [
-        `\n${infoHeader}\n\n${formulaString}\n\n${affixBracketString}`,
+        `\n${infoHeader}`,
         `\n${scoreString}`,
+        `\n${formulaDetails}`,
     ];
 }
 
@@ -392,7 +379,10 @@ module.exports = {
         if (normalizedMessage === 'info' || normalizedMessage === '--info') {
             const infoParts = buildInfoOutputParts();
             await method(interaction, infoParts[0]);
-            return method(interaction, infoParts[1], false);
+            for (let i = 1; i < infoParts.length; i++) {
+                await method(interaction, infoParts[i], false);
+            }
+            return;
         }
 
         const args = parseMessageForArgs(message, interaction.channel);
