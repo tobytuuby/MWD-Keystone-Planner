@@ -214,6 +214,43 @@ function buildKeyLevelScoreRows() {
 
 function buildHelpOutput() {
     const tableString = buildTableFromJson(getHelpJson());
+    const quickGuideString = buildTableFromJson({
+        title: '',
+        heading: ['Command', 'Purpose'],
+        rows: [
+            ['help', 'Show command usage and examples'],
+            ['info', 'Show scoring system details and project links'],
+            ['<region/realm/name>', 'Analyze current runs and suggest best dungeons'],
+            ['--simulate <level>', 'Simulate running all dungeons at a target key level'],
+            ['--best-runs', 'Use best run data mode'],
+        ]
+    });
+    const exampleString = buildTableFromJson({
+        title: '',
+        heading: 'Examples',
+        rows: [
+            ['/mwd-kp help'],
+            ['/mwd-kp eu/argent-dawn/ellorett'],
+            ['/mwd-kp eu/argent-dawn/ellorett --best-runs'],
+            ['/mwd-kp eu/argent-dawn/ellorett --simulate 15'],
+        ]
+    });
+
+    return `\n${tableString}\n\n${quickGuideString}\n\n${exampleString}`;
+}
+
+function buildInfoOutput() {
+    const infoTable = buildTableFromJson({
+        title: '',
+        heading: ['MWD Keystone Planner', 'Details'],
+        rows: [
+            ['Description', 'Helps WoW players improve Mythic+ score by recommending high-impact dungeons.'],
+            ['GitHub', 'https://github.com/tobytuuby/MWD-Keystone-Planner'],
+            ['Website', 'https://tobytuuby.github.io/MWD-Keystone-Planner/'],
+            ['Discord', 'https://discord.gg/ucgP4dvmtQ'],
+            ['Support', 'https://ko-fi.com/mythicratinghelper'],
+        ]
+    });
     const formulaString = buildTableFromJson({
         title: '',
         heading: ['Scoring Formula', 'Value'],
@@ -237,39 +274,13 @@ function buildHelpOutput() {
             ['+12+', '60'],
         ]
     });
-    const exampleString = buildTableFromJson({
-        title: '',
-        heading: 'Examples',
-        rows: [
-            ['/mwd-kp help'],
-            ['/mwd-kp eu/argent-dawn/ellorett'],
-            ['/mwd-kp eu/argent-dawn/ellorett --best-runs'],
-            ['/mwd-kp eu/argent-dawn/ellorett --simulate 15'],
-        ]
-    });
     const scoreString = buildTableFromJson({
         title: '',
         heading: ['Keystone Level', 'Base Score (Completion)'],
         rows: buildKeyLevelScoreRows(),
     });
 
-    return `\n${tableString}\n\n${formulaString}\n\n${affixBracketString}\n\n${exampleString}\n\n${scoreString}`;
-}
-
-function buildInfoOutput() {
-    const infoTable = buildTableFromJson({
-        title: '',
-        heading: ['MWD Keystone Planner', 'Details'],
-        rows: [
-            ['Description', 'Helps WoW players improve Mythic+ score by recommending high-impact dungeons.'],
-            ['GitHub', 'https://github.com/tobytuuby/MWD-Keystone-Planner'],
-            ['Website', 'https://tobytuuby.github.io/MWD-Keystone-Planner/'],
-            ['Discord', 'https://discord.gg/ucgP4dvmtQ'],
-            ['Support', 'https://ko-fi.com/mythicratinghelper'],
-        ]
-    });
-
-    return `\n${infoTable}`;
+    return `\n${infoTable}\n\n${formulaString}\n\n${affixBracketString}\n\n${scoreString}`;
 }
 
 function getScoreForTimedCompletion(level, completionLevel, dungeonService, dungeonScoreService) {
