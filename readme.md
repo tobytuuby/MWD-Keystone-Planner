@@ -30,3 +30,7 @@ Use your Discord app `CLIENT_ID` in this URL:
 ## Technical docs
 For setup, environment variables, deployment details, and project internals:
 - `docs/technical-notes.md`
+
+## License
+This project is distributed under the ISC License. See `LICENSE` for full text.
+As a fork of Mythic Rating Helper, original license notices are preserved.
