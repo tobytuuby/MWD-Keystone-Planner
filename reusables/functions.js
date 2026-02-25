@@ -238,11 +238,11 @@ const prepareMessage = (message) => {
 
 async function generateMythicImage(data) {
     const { createCanvas, loadImage } = require('@napi-rs/canvas');
-    const width = 1320;
-    const rowHeight = 32;
-    const rowsStartY = 286;
-    const minimumHeight = 620;
-    const computedHeight = rowsStartY + (data.dungeons.length * rowHeight) + 70;
+    const width = 1080;
+    const rowHeight = 40;
+    const rowsStartY = 320;
+    const minimumHeight = 760;
+    const computedHeight = rowsStartY + (data.dungeons.length * rowHeight) + 90;
     const height = Math.max(minimumHeight, computedHeight);
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
@@ -254,47 +254,47 @@ async function generateMythicImage(data) {
     ctx.fillRect(0, 0, width, height);
 
     ctx.fillStyle = '#a78bfa';
-    ctx.font = 'bold 42px Sans';
+    ctx.font = 'bold 48px Sans';
     ctx.fillText('MWD Keystone Planner', 40, 60);
 
-    ctx.font = '24px Sans';
+    ctx.font = '30px Sans';
     ctx.fillStyle = '#e5e7eb';
 
-    ctx.fillText(`Current Score: ${Math.ceil(data.score)}`, 40, 110);
-    ctx.fillText(`Minimum Total Score Increase: +${data.totalScoreIncrease}`, 40, 145);
-    ctx.fillText(`Score after all runs: ${Math.ceil(data.score) + data.totalScoreIncrease}`, 40, 180);
+    ctx.fillText(`Current Score: ${Math.ceil(data.score)}`, 40, 120);
+    ctx.fillText(`Minimum Total Score Increase: +${data.totalScoreIncrease}`, 40, 165);
+    ctx.fillText(`Score after all runs: ${Math.ceil(data.score) + data.totalScoreIncrease}`, 40, 210);
 
     ctx.strokeStyle = '#374151';
     ctx.beginPath();
-    ctx.moveTo(40, 200);
-    ctx.lineTo(width - 40, 200);
+    ctx.moveTo(40, 235);
+    ctx.lineTo(width - 40, 235);
     ctx.stroke();
 
-    let y = 246;
+    let y = 280;
 
-    ctx.font = 'bold 20px Sans';
+    ctx.font = 'bold 24px Sans';
 
     ctx.fillStyle = '#86efac';
     ctx.fillText('Dungeon Name', 40, y);
-    ctx.fillText('Current', 500, y);
-    ctx.fillText('Target', 620, y);
-    ctx.fillText('Score Increase', 730, y);
-    ctx.fillText('On Time', 900, y);
-    ctx.fillText('2-Chest', 1010, y);
-    ctx.fillText('3-Chest', 1120, y);
+    ctx.fillText('Current', 470, y);
+    ctx.fillText('Target', 575, y);
+    ctx.fillText('Score+', 670, y);
+    ctx.fillText('OnTime', 775, y);
+    ctx.fillText('2Chest', 870, y);
+    ctx.fillText('3Chest', 955, y);
 
     y = rowsStartY;
-    ctx.font = '19px Sans';
+    ctx.font = '23px Sans';
 
     for (const dungeon of data.dungeons) {
         ctx.fillText(dungeon.dungeon, 40, y);
 
-        ctx.fillText(`+${dungeon.mythic_level}`, 500, y);
-        ctx.fillText(`+${dungeon.target_level}`, 620, y);
-        ctx.fillText(`+${dungeon.scoreIncrease ?? Math.ceil(dungeon.potentialMinimumScore)}`, 730, y);
-        ctx.fillText(`+${dungeon.onTimeGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 900, y);
-        ctx.fillText(`+${dungeon.twoChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 1010, y);
-        ctx.fillText(`+${dungeon.threeChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 1120, y);
+        ctx.fillText(`+${dungeon.mythic_level}`, 470, y);
+        ctx.fillText(`+${dungeon.target_level}`, 575, y);
+        ctx.fillText(`+${dungeon.scoreIncrease ?? Math.ceil(dungeon.potentialMinimumScore)}`, 670, y);
+        ctx.fillText(`+${dungeon.onTimeGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 775, y);
+        ctx.fillText(`+${dungeon.twoChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 870, y);
+        ctx.fillText(`+${dungeon.threeChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 955, y);
 
         y += rowHeight;
     }
@@ -305,7 +305,7 @@ async function generateMythicImage(data) {
     ctx.lineTo(width - 40, y);
     ctx.stroke();
 
-    ctx.font = '16px Sans';
+    ctx.font = '18px Sans';
     ctx.fillStyle = '#e5e7eb';
     if (data.message) {
         ctx.fillText(data.message, 40, y + 20);
