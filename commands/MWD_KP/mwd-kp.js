@@ -459,8 +459,7 @@ module.exports = {
 
                 return interaction.editReply({
                     files: [attachment],
-                    content: 'Finding MWD Keystone Planner helpful? [Please consider supporting me](<https://ko-fi.com/mythicratinghelper>)\n'+
-                        'Found an issue? [Report it on GitHub](<https://github.com/tobytuuby/MWD-Keystone-Planner>)\n'
+                    content: 'Found an issue? [Report it on GitHub](<https://github.com/tobytuuby/MWD-Keystone-Planner>)\n'
                 });
             } catch (imageError) {
                 console.error(imageError);
