@@ -271,18 +271,25 @@ async function generateMythicImage(data) {
     ctx.lineTo(width - 40, 280);
     ctx.stroke();
 
+    const drawHeaderCell = (line1, line2, x, yPos) => {
+        ctx.fillText(line1, x, yPos);
+        if (line2) {
+            ctx.fillText(line2, x, yPos + 18);
+        }
+    };
+
     let y = 318;
 
     ctx.font = 'bold 20px Sans';
 
     ctx.fillStyle = '#86efac';
-    ctx.fillText('Dungeon Name', 40, y);
-    ctx.fillText('Current', 430, y);
-    ctx.fillText('Target', 520, y);
-    ctx.fillText('Score Increase', 605, y);
-    ctx.fillText('On Time', 760, y);
-    ctx.fillText('2-Chest', 860, y);
-    ctx.fillText('3-Chest', 950, y);
+    ctx.fillText('Dungeon Name', 40, y + 9);
+    drawHeaderCell('Current', '', 430, y);
+    drawHeaderCell('Target', '', 520, y);
+    drawHeaderCell('Score', 'Increase', 605, y);
+    drawHeaderCell('On', 'Time', 760, y);
+    drawHeaderCell('2-', 'Chest', 860, y);
+    drawHeaderCell('3-', 'Chest', 950, y);
 
     y = rowsStartY;
     ctx.font = '22px Sans';
