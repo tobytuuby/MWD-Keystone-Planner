@@ -1,6 +1,12 @@
 # MWD Keystone Planner
 MWD Keystone Planner is a Discord bot which can be used to check a character's Mythic+ runs, and return which dungeons would improve their overall Mythic+ rating score.
 
+## Fork credit
+MWD Keystone Planner is a fork of **Mythic Rating Helper**.
+
+Credit to the original project and maintainers:
+- Mythic Rating Helper website: `https://www.mr-helper.xyz/`
+
 ## What it does
 - Looks up a character's Mythic+ runs
 - Calculates score gain opportunities
