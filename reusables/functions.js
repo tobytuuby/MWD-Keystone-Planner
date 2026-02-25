@@ -240,7 +240,7 @@ async function generateMythicImage(data) {
     const { createCanvas, loadImage } = require('@napi-rs/canvas');
     const width = 1080;
     const rowHeight = 40;
-    const rowsStartY = 360;
+    const rowsStartY = 372;
     const minimumHeight = 760;
     const computedHeight = rowsStartY + (data.dungeons.length * rowHeight) + 90;
     const height = Math.max(minimumHeight, computedHeight);
@@ -274,7 +274,7 @@ async function generateMythicImage(data) {
     const drawHeaderCell = (line1, line2, x, yPos) => {
         ctx.fillText(line1, x, yPos);
         if (line2) {
-            ctx.fillText(line2, x, yPos + 18);
+            ctx.fillText(line2, x, yPos + 22);
         }
     };
 
@@ -284,9 +284,9 @@ async function generateMythicImage(data) {
 
     ctx.fillStyle = '#86efac';
     ctx.fillText('Dungeon Name', 40, y + 9);
-    drawHeaderCell('Current', 'Key', 380, y);
-    drawHeaderCell('Target', 'Key', 500, y);
-    drawHeaderCell('Score', 'Increase', 590, y);
+    drawHeaderCell('Current', 'Key', 430, y);
+    drawHeaderCell('Target', 'Key', 550, y);
+    drawHeaderCell('Score', 'Increase', 660, y);
     drawHeaderCell('On', 'Time', 760, y);
     drawHeaderCell('2-', 'Chest', 860, y);
     drawHeaderCell('3-', 'Chest', 950, y);
@@ -297,9 +297,9 @@ async function generateMythicImage(data) {
     for (const dungeon of data.dungeons) {
         ctx.fillText(dungeon.dungeon, 40, y);
 
-        ctx.fillText(`+${dungeon.mythic_level}`, 380, y);
-        ctx.fillText(`+${dungeon.target_level}`, 500, y);
-        ctx.fillText(`+${dungeon.scoreIncrease ?? Math.ceil(dungeon.potentialMinimumScore)}`, 590, y);
+        ctx.fillText(`+${dungeon.mythic_level}`, 430, y);
+        ctx.fillText(`+${dungeon.target_level}`, 550, y);
+        ctx.fillText(`+${dungeon.scoreIncrease ?? Math.ceil(dungeon.potentialMinimumScore)}`, 660, y);
         ctx.fillText(`+${dungeon.onTimeGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 760, y);
         ctx.fillText(`+${dungeon.twoChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 860, y);
         ctx.fillText(`+${dungeon.threeChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 950, y);
