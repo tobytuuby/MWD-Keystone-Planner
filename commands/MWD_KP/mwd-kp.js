@@ -349,7 +349,6 @@ function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons
             dungeon.dungeon,
             `+${dungeon.mythic_level}`,
             `+${dungeon.target_level}`,
-            `+${dungeon.scoreIncrease}`,
             `+${dungeon.onTimeGain}`,
             `+${dungeon.twoChestGain}`,
             `+${dungeon.threeChestGain}`,
@@ -358,7 +357,7 @@ function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons
 
     const dungeonTable = buildTableFromJson({
         title: '',
-        heading: ['Dungeon', 'Current', 'Target', 'Score Increase', 'On Time', '2-Chest', '3-Chest'],
+        heading: ['Dungeon', 'Current Key', 'Target Key', 'On Time', '2-Chest', '3-Chest'],
         rows: dungeonRows,
     });
 
