@@ -284,9 +284,9 @@ async function generateMythicImage(data) {
 
     ctx.fillStyle = '#86efac';
     ctx.fillText('Dungeon Name', 40, y + 9);
-    drawHeaderCell('Current', '', 430, y);
-    drawHeaderCell('Target', '', 520, y);
-    drawHeaderCell('Score', 'Increase', 605, y);
+    drawHeaderCell('Current', 'Key', 380, y);
+    drawHeaderCell('Target', 'Key', 500, y);
+    drawHeaderCell('Score', 'Increase', 590, y);
     drawHeaderCell('On', 'Time', 760, y);
     drawHeaderCell('2-', 'Chest', 860, y);
     drawHeaderCell('3-', 'Chest', 950, y);
@@ -297,9 +297,9 @@ async function generateMythicImage(data) {
     for (const dungeon of data.dungeons) {
         ctx.fillText(dungeon.dungeon, 40, y);
 
-        ctx.fillText(`+${dungeon.mythic_level}`, 430, y);
-        ctx.fillText(`+${dungeon.target_level}`, 520, y);
-        ctx.fillText(`+${dungeon.scoreIncrease ?? Math.ceil(dungeon.potentialMinimumScore)}`, 605, y);
+        ctx.fillText(`+${dungeon.mythic_level}`, 380, y);
+        ctx.fillText(`+${dungeon.target_level}`, 500, y);
+        ctx.fillText(`+${dungeon.scoreIncrease ?? Math.ceil(dungeon.potentialMinimumScore)}`, 590, y);
         ctx.fillText(`+${dungeon.onTimeGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 760, y);
         ctx.fillText(`+${dungeon.twoChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 860, y);
         ctx.fillText(`+${dungeon.threeChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 950, y);
