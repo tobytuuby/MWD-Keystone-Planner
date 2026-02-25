@@ -240,7 +240,7 @@ async function generateMythicImage(data) {
     const { createCanvas, loadImage } = require('@napi-rs/canvas');
     const width = 1080;
     const rowHeight = 40;
-    const rowsStartY = 320;
+    const rowsStartY = 360;
     const minimumHeight = 760;
     const computedHeight = rowsStartY + (data.dungeons.length * rowHeight) + 90;
     const height = Math.max(minimumHeight, computedHeight);
@@ -260,17 +260,18 @@ async function generateMythicImage(data) {
     ctx.font = '30px Sans';
     ctx.fillStyle = '#e5e7eb';
 
-    ctx.fillText(`Current Score: ${Math.ceil(data.score)}`, 40, 120);
-    ctx.fillText(`Minimum Total Score Increase: +${data.totalScoreIncrease}`, 40, 165);
-    ctx.fillText(`Score after all runs: ${Math.ceil(data.score) + data.totalScoreIncrease}`, 40, 210);
+    ctx.fillText(`${data.character ?? ''}`, 40, 120);
+    ctx.fillText(`Current Score: ${Math.ceil(data.score)}`, 40, 165);
+    ctx.fillText(`Minimum Total Score Increase: +${data.totalScoreIncrease}`, 40, 210);
+    ctx.fillText(`Score after all runs: ${Math.ceil(data.score) + data.totalScoreIncrease}`, 40, 255);
 
     ctx.strokeStyle = '#374151';
     ctx.beginPath();
-    ctx.moveTo(40, 235);
-    ctx.lineTo(width - 40, 235);
+    ctx.moveTo(40, 280);
+    ctx.lineTo(width - 40, 280);
     ctx.stroke();
 
-    let y = 280;
+    let y = 320;
 
     ctx.font = 'bold 24px Sans';
 
@@ -304,12 +305,6 @@ async function generateMythicImage(data) {
     ctx.moveTo(40, y);
     ctx.lineTo(width - 40, y);
     ctx.stroke();
-
-    ctx.font = '18px Sans';
-    ctx.fillStyle = '#e5e7eb';
-    if (data.message) {
-        ctx.fillText(data.message, 40, y + 20);
-    }
 
     return canvas.toBuffer('image/png');
 }

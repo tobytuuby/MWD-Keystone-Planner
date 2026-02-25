@@ -465,7 +465,7 @@ module.exports = {
                     score: Math.ceil(allData.currentScore),
                     totalScoreIncrease: totalPoints,
                     dungeons: displayDungeons,
-                    message,
+                    character: `${args.region}/${args.realm}/${args.name}`,
                 });
 
                 const fileName = message.split('/');
