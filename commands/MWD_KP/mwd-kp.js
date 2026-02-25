@@ -345,7 +345,7 @@ function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons
 
     const dungeonTable = buildTableFromJson({
         title: '',
-        heading: ['Dungeon', 'Current', 'Target', 'Gain@Target', 'Completion +1', 'Completion +2', 'Completion +3'],
+        heading: ['Dungeon', 'Current', 'Target', 'Score Increase', 'On Time', '2-Chest', '3-Chest'],
         rows: dungeonRows,
     });
 
