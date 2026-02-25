@@ -317,29 +317,42 @@ function getScoreForTimedCompletion(level, completionLevel, dungeonService, dung
     return baseScoreAtLevel + (completionBonusByLevel[completionLevel] ?? 0);
 }
 
-function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons) {
+function buildDungeonDisplayData(sortedDungeons, seasonDungeons) {
     const dungeonService = new DungeonService(seasonDungeons);
     const dungeonScoreService = new DungeonScoreService();
-    const dungeonRows = sortedDungeons.map((dungeon) => {
+
+    return sortedDungeons.map((dungeon) => {
         const targetLevel = Number(dungeon.target_level);
-        const completionGainOne = Math.ceil(
+        const onTimeGain = Math.ceil(
             getScoreForTimedCompletion(targetLevel, 1, dungeonService, dungeonScoreService) - dungeon.score
         );
-        const completionGainTwo = Math.ceil(
+        const twoChestGain = Math.ceil(
             getScoreForTimedCompletion(targetLevel, 2, dungeonService, dungeonScoreService) - dungeon.score
         );
-        const completionGainThree = Math.ceil(
+        const threeChestGain = Math.ceil(
             getScoreForTimedCompletion(targetLevel, 3, dungeonService, dungeonScoreService) - dungeon.score
         );
 
+        return {
+            ...dungeon,
+            scoreIncrease: Math.ceil(dungeon.potentialMinimumScore),
+            onTimeGain,
+            twoChestGain,
+            threeChestGain,
+        };
+    });
+}
+
+function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons) {
+    const dungeonRows = buildDungeonDisplayData(sortedDungeons, seasonDungeons).map((dungeon) => {
         return [
             dungeon.dungeon,
             `+${dungeon.mythic_level}`,
             `+${dungeon.target_level}`,
-            `+${Math.ceil(dungeon.potentialMinimumScore)}`,
-            `+${completionGainOne}`,
-            `+${completionGainTwo}`,
-            `+${completionGainThree}`,
+            `+${dungeon.scoreIncrease}`,
+            `+${dungeon.onTimeGain}`,
+            `+${dungeon.twoChestGain}`,
+            `+${dungeon.threeChestGain}`,
         ];
     });
 
@@ -438,6 +451,8 @@ module.exports = {
         try {
             const allData = await getDungeonData(args, interaction, method);
             const sortedDungeons = sortDungeonsBy(allData.dungeons, 'potentialMinimumScore');
+            const seasonDungeons = new DetermineSeasonDungeonService().execute();
+            const displayDungeons = buildDungeonDisplayData(sortedDungeons, seasonDungeons);
             let totalPoints = 0;
             for (let i = 0; i < sortedDungeons.length; i++) {
                 totalPoints += Math.ceil(sortedDungeons[i].potentialMinimumScore);
@@ -449,7 +464,7 @@ module.exports = {
                 const image = await generateMythicImage({
                     score: Math.ceil(allData.currentScore),
                     totalScoreIncrease: totalPoints,
-                    dungeons: sortedDungeons,
+                    dungeons: displayDungeons,
                     message,
                 });
 
@@ -463,7 +478,6 @@ module.exports = {
                 });
             } catch (imageError) {
                 console.error(imageError);
-                const seasonDungeons = new DetermineSeasonDungeonService().execute();
                 return method(interaction, buildFallbackSummary(allData.currentScore, totalPoints, sortedDungeons, seasonDungeons));
             }
         } catch (err) {

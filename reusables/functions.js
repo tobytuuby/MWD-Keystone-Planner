@@ -238,8 +238,12 @@ const prepareMessage = (message) => {
 
 async function generateMythicImage(data) {
     const { createCanvas, loadImage } = require('@napi-rs/canvas');
-    const width = 900;
-    const height = 600;
+    const width = 1320;
+    const rowHeight = 32;
+    const rowsStartY = 286;
+    const minimumHeight = 620;
+    const computedHeight = rowsStartY + (data.dungeons.length * rowHeight) + 70;
+    const height = Math.max(minimumHeight, computedHeight);
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
@@ -266,32 +270,33 @@ async function generateMythicImage(data) {
     ctx.lineTo(width - 40, 200);
     ctx.stroke();
 
-    let y = 230;
+    let y = 246;
 
-    ctx.font = '20px Sans';
+    ctx.font = 'bold 20px Sans';
 
     ctx.fillStyle = '#86efac';
     ctx.fillText('Dungeon Name', 40, y);
-    ctx.fillText('Current Level', 360, y);
-    ctx.fillText('Target Level', 520, y);
-    ctx.fillText('Score Increase', 680, y);
+    ctx.fillText('Current', 500, y);
+    ctx.fillText('Target', 620, y);
+    ctx.fillText('Score Increase', 730, y);
+    ctx.fillText('On Time', 900, y);
+    ctx.fillText('2-Chest', 1010, y);
+    ctx.fillText('3-Chest', 1120, y);
 
-    y = 270;
+    y = rowsStartY;
+    ctx.font = '19px Sans';
 
     for (const dungeon of data.dungeons) {
         ctx.fillText(dungeon.dungeon, 40, y);
 
-        ctx.fillText(dungeon.mythic_level, 360, y);
-        ctx.fillText(dungeon.target_level, 520, y);
-        ctx.fillText(`+${Math.ceil(dungeon.potentialMinimumScore)} points`, 680, y);
+        ctx.fillText(`+${dungeon.mythic_level}`, 500, y);
+        ctx.fillText(`+${dungeon.target_level}`, 620, y);
+        ctx.fillText(`+${dungeon.scoreIncrease ?? Math.ceil(dungeon.potentialMinimumScore)}`, 730, y);
+        ctx.fillText(`+${dungeon.onTimeGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 900, y);
+        ctx.fillText(`+${dungeon.twoChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 1010, y);
+        ctx.fillText(`+${dungeon.threeChestGain ?? Math.ceil(dungeon.potentialMinimumScore)}`, 1120, y);
 
-        // ctx.fillText(
-        //     `${dungeon.mythic_level} → ${dungeon.target_level} (+${Math.ceil(dungeon.potentialMinimumScore)})`,
-        //     520,
-        //     y
-        // );
-
-        y += 36;
+        y += rowHeight;
     }
 
     ctx.strokeStyle = '#374151';
@@ -347,5 +352,6 @@ module.exports = {
     getHelpJson,
     generateMythicImage
 };
+
 
 
