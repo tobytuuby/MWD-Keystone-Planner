@@ -1,0 +1,8 @@
+## Interface: 110200
+## Title: MWD Keystone Planner Exporter
+## Notes: Records Mythic+ key starts and upgrades for MWD Keystone Planner.
+## Author: Codex
+## Version: 1.0.0
+## SavedVariables: MWDKP_ExporterDB
+
+MWDKeystonePlannerExporter.lua

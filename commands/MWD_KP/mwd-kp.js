@@ -438,7 +438,7 @@ module.exports = {
         }
 
         if (isSlashCommand) {
-            await interaction.reply('Working on it...');
+            await interaction.deferReply();
         }
 
         const args = parseMessageForArgs(message, interaction.channel);
