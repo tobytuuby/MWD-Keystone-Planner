@@ -29,11 +29,16 @@ client.on('interactionCreate', async interaction => {
     }
 
     try {
-        const message = interaction.options.getString('command', true);
+        const message = interaction.options.getString('command');
 
         await command.execute(interaction, message, true);
     } catch (err) {
         console.error(err);
+        if (interaction.replied || interaction.deferred) {
+            await interaction.editReply({ content: 'There was an error whilst executing the command.' });
+            return;
+        }
+
         await interaction.reply({content: 'There was an error whilst executing the command.'});
     }
 });

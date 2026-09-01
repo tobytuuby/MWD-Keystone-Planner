@@ -12,6 +12,7 @@ const {
 const { DungeonService } = require('../../services/DungeonService');
 const { DungeonScoreService } = require('../../services/DungeonScoreService');
 const { DetermineSeasonDungeonService } = require('../../services/DetermineSeasonDungeonService');
+const { DungeonTimerService } = require('../../services/DungeonTimerService');
 
 async function getDungeonData(args) {
     const res = await requestData(args);
@@ -320,8 +321,10 @@ function getScoreForTimedCompletion(level, completionLevel, dungeonService, dung
 function buildDungeonDisplayData(sortedDungeons, seasonDungeons) {
     const dungeonService = new DungeonService(seasonDungeons);
     const dungeonScoreService = new DungeonScoreService();
+    const dungeonTimerService = new DungeonTimerService();
+    const timers = dungeonTimerService.execute();
 
-    return sortedDungeons.map((dungeon) => {
+    const displayDungeons = sortedDungeons.map((dungeon) => {
         const targetLevel = Number(dungeon.target_level);
         const onTimeGain = Math.ceil(
             getScoreForTimedCompletion(targetLevel, 1, dungeonService, dungeonScoreService) - dungeon.score
@@ -341,6 +344,8 @@ function buildDungeonDisplayData(sortedDungeons, seasonDungeons) {
             threeChestGain,
         };
     });
+
+    return dungeonTimerService.attachTimers(displayDungeons, timers);
 }
 
 function buildFallbackSummary(score, totalPoints, sortedDungeons, seasonDungeons) {
@@ -438,7 +443,7 @@ module.exports = {
         }
 
         if (isSlashCommand) {
-            await interaction.reply('Working on it...');
+            await interaction.deferReply();
         }
 
         const args = parseMessageForArgs(message, interaction.channel);
